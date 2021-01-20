@@ -1,0 +1,106 @@
+---
+  - name: "say-mqtt"
+    signals:
+      - mqtt_subscriber:
+          broker_ip: "127.0.0.1"
+          topic: "$SYS/kalliope/trigger"
+    neurons:
+      - say:
+          message: 
+            - "{{ mqtt_subscriber_message }}"
+  
+  - name: "pause-mqtt"
+    signals:
+      - mqtt_subscriber:
+          broker_ip: "127.0.0.1"
+          topic: "$SYS/kalliope/pause"
+    neurons:
+      - say:
+          message:
+            - "Je me mets en pause"
+      - settings:
+          mute: True
+            
+  - name: "resume-mqtt"
+    signals:
+      - mqtt_subscriber:
+          broker_ip: "127.0.0.1"
+          topic: "$SYS/kalliope/resume"
+    neurons:
+      - settings:
+          mute: False
+      - say:
+          message:
+            - "Je suis de retour"
+
+
+    neurons:
+      - say:
+          message: 
+            - "{{ mqtt_subscriber_message }}"
+            
+  - name: "say-hello-fr"
+    signals:
+      - order: "Bonjour"
+    neurons:
+      - say:
+          message: "Bonjour monsieur"
+ 
+  - name: "hello-to"
+    signals:
+      - order: "dis Bonjour à {{ name }}"
+    neurons:
+      - say:
+          message: "Bonjour {{ name }}"
+
+  - name: "say-ca-va"
+    signals:
+      - order: "Comment allez"
+    neurons:
+      - say:
+          message: "Tres bien"
+
+  - name: "time"
+    signals:
+      - order: "Quelle heure"
+    neurons:
+      - systemdate:
+          say_template:
+            - "Il est {{ hours }} heures et {{ minutes }} minutes"
+
+  - name: "light-on"
+    signals:
+      - order: "allume lumière"
+    neurons:
+      - say:
+          message:
+            - "Et la lumière fut!"
+
+  - name: "order-not-found-synapse"
+    signals: []
+    neurons:
+      - say:
+          message:
+            - "Je n'ai pas compris vôtre ordre"
+            - "Je ne connais pas cet ordre"
+            - "Veuillez renouveller votre ordre"
+            - "Veuillez reformuller s'il vous plait"
+            - "Je n'ai pas saisi cet ordre"
+
+  - name: "on-triggered-synapse"
+    signals: []
+    neurons:
+      - say:
+          message:
+            - "Oui monsieur?"
+            - "Je vous écoute"
+            - "Monsieur?"
+            - "Que puis-je faire pour vous?"
+            - "J'écoute"
+            - "Oui?"
+
+  - name: "on-start-synapse"
+    signals: []
+    neurons:
+      - say:
+          message: "c'est parti mon kiki"
